@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Profile from '@/components/Profile'
 import Vente from '@/components/Vente/Vente'
 import Achat from '@/components/Achat/Achat'
+import Historique from '@/components/Historique/Historique'
 
 Vue.use(Router)
 
@@ -22,7 +23,12 @@ export default new Router({
       path: '/achat',
       name: 'achat',
       component: Achat
+    },{
+      path: '/historique',
+      name: 'historique',
+      component: Historique
     }
+    
   ],
   linkExactActiveClass: "active"
 })

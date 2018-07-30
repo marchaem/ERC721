@@ -72,7 +72,7 @@
             </div>
             <div class="offset-md-1 pt-2">
                 <img src="../../static/token3.png" height="25" width="25">
-                GPL
+                Plastic
             </div>
             
         </div>
@@ -80,19 +80,19 @@
             <thead class="thead-dark">
                 <tr>
                 <th scope="col">ID</th>
-                <th scope="col">Type</th>
-                <th scope="col">Quality</th>
+                <th scope="col">Type</th>         
                 <th scope="col">Origin</th>
                 <th scope="col">Refinable</th>
+                <th scope="col">Price</th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="token_user in tokens_user">
                     <th scope="row">{{token_user.id}}</th>
                     <td><img v-bind:src="token_user.type" height="25" width="25"></td>
-                    <td>{{token_user.quality}}</td>
-                    <td>{{token_user.origin}}</td>
+                    <td><img v-bind:src="token_user.origin" height="25" width="25"></td>
                     <td><img v-bind:src="token_user.refinable" height="25" width="25"></td>
+                    <td>{{token_user.quality}}</td>
                 </tr>
             </tbody>
         </table>
@@ -155,6 +155,7 @@
         
       },
 
+
       getBarrelById(fn) {
         this.myContract.getOwnedBarrels.call({from : this.userAddress}, 
           function(error, result){
@@ -212,6 +213,9 @@
             case 3:
               img_token = "../../static/token3.png";
               break;
+            case 4:
+              img_token = "../../static/plastic.png";
+              break;  
             default:
               break;
           }
