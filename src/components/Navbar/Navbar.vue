@@ -15,6 +15,9 @@
 	      <li class="nav-item">
 	      	<router-link :to="{name: 'achat'}" class="nav-link"><span>Achat</span></router-link>
 	      </li>
+				<li class="nav-item">
+	      	<router-link :to="{name: 'historique'}" class="nav-link"><span>Historique</span></router-link>
+	      </li>
 	    </ul>
 			<button v-show="islogged == true" class="btn btn-danger my-2 my-sm-0" @click="disconnect()">Disconnect</button>
 	  </div>

@@ -45,9 +45,10 @@
 						<tr>
 							<th scope="col">ID</th>
 							<th scope="col">Type</th>
-							<th scope="col">Quality</th>
+							<th scope="col">Price</th>
 							<th scope="col">Origin</th>
 							<th scope="col">Refinable</th>
+							
 						</tr>
 					</thead>
 					<tbody>
@@ -55,8 +56,9 @@
 							<th scope="row">{{token_user.id}}</th>
 							<td><img v-bind:src="token_user.type" height="25" width="25"></td>
 							<td>{{token_user.quality}}</td>
-							<td>{{token_user.origin}}</td>
+							<td><img v-bind:src="token_user.origin" height="25" width="25"></td>
 							<td><img v-bind:src="token_user.refinable" height="25" width="25"></td>
+							<td><button type="button" class="btn btn-primary loading" @click="cancelSales(token_user.id)">Cancel</button></td>
 						</tr>
 					</tbody>
 				</table>
@@ -91,11 +93,9 @@
 				tokens_user_on_sale: [],
 				ids_token_user : [],
 				ids_token_user_on_sale : [],
-
 				price: 0,
 				duration: null,
 				token_to_sell : null,
-
         		custom_width: 50
 
 			}
@@ -126,6 +126,18 @@
 				} else
 				alert("Form is not valid");
 			},
+			cancelSales(id) {
+				this.myContract.cancelAuction.sendTransaction(id,
+				{from: this.userAddress,gas : 2000000}, 
+				function(error, result) {
+							if(!error){
+								console.log(result);
+							} else {
+								console.log(error);
+							}        
+						});
+						this.fetch_data();
+			},
 			fetch_data() {
 				this.ids_token_user = []
 				this.ids_token_user_on_sale = []
@@ -136,7 +148,7 @@
 			},
 
 			getData(id) {
-        		this.myContract.getBarrelById.call(id,{from: this.userAddress}, this.addToTokenList)
+        		this.myContract.getBarrelById.call(id,{from: this.userAddress}, this.addToTokenList);
       		},
 
 			update_token_ids(error, result) {
@@ -166,6 +178,7 @@
 				if(!error) {
 					var img_refinable;
 					var img_token;
+					var img_origin = "../../static/france.png";
 					if(result[4]) {
 						img_refinable = "../../static/002-success.png"
 					} else {
@@ -188,7 +201,7 @@
 						break;
 					}
 					this.tokens_user_on_sale.push({id: result[0].c[0], type: img_token, 
-					quality: result[3].c[0], origin: result[1].c[0], refinable: img_refinable})
+					quality: result[3].c[0], origin: img_origin, refinable: img_refinable})
 				} else {
 					console.error(error);
 				}  

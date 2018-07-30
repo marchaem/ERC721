@@ -1,5 +1,8 @@
 <template>
 	<div>
+		<div v-if="logged">
+         <router-view :tokensOnSale="tokens_on_sale" />
+      </div>
 		<div class="row no-gutters ">
 			<div class="row ml-1 mt-3">
 				<h2 class="">List of user's tokens</h2>

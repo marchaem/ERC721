@@ -18,8 +18,7 @@
 						<td>{{token_telling.past}}</td>
 					</tr>
             </tbody>
-        </table>
-            
+        </table>        
         </div>
 </template>
 
@@ -37,7 +36,7 @@
 		quality: 0, origin: 0, refinable: "../../static/refresh-button.png"}
       }
     },
-    props: ['myContract'],
+    props: ['myContract','tokensOnSale'],
     created: function () { 
 		this.fetch_data();
     },
