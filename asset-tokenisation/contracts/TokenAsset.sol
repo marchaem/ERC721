@@ -47,12 +47,12 @@ contract TokenAsset is ERC721Token("Petrol Barrel", "PTR"), Ownable {
         _mint(msg.sender, newBarrel(_origin, 0, 100, true));
     }
 
-    /// @dev Retrieve un array of id corresponding to allOwned Token
+    /// @dev Retrieve an array of id corresponding to all Owned Token
     function getOwnedBarrels() public view returns(uint[]) {
         return ownedTokens[msg.sender];
     }
 
-    /// @dev Retrieve un array of id corresponding to allOwned Token
+    /// @dev Retrieve an array of id corresponding to all Owned Token
     function getBarrelById(uint _id) public view returns(uint, uint8, uint8, uint, bool){
         require(_id < barrels.length);
 

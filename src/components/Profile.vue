@@ -106,27 +106,25 @@
     data () {
       return {
         account_balance : 10,
-
         tokens_user: [],
         ids_token_user : [],
-
         origin : 0,
         token_to_refine : null,
-
         custom_width: 0
       }
     },
     props: ['myContract','address','balance','web3'],
 
     mounted: function () {
-        this.account_balance = web3.fromWei(this.balance.toNumber(),'ether');
-        console.log(web3.fromWei(this.balance.toNumber(),'ether'))
+        //this.account_balance = web3.fromWei(this.balance.toNumber(),'ether');
+        //console.log(web3.fromWei(this.balance.toNumber(),'ether'))
         this.fetch_data();
     },
 
     methods: {
       createToken() {
-        this.myContract.mintBrut.sendTransaction(this.origin, { from: this.userAddress, gas: 200000}, 
+        this.myContract.mintBrut.sendTransaction(this.origin,
+         { from: this.userAddress, gas: 2000000,gasPrice:80000000}, 
           function(error, result) {
             if(!error){
               console.log(result);
@@ -140,8 +138,9 @@
       },
 
       refineToken() {
-        console.log("to refine "+this.token_to_refine)
-          this.myContract.refineToken.sendTransaction(this.token_to_refine, {from: this.userAddress, gas: 600000}, 
+        console.log("to refine " + this.token_to_refine)
+          this.myContract.refineToken.sendTransaction(this.token_to_refine,
+           {from: this.userAddress, gas: 600000, gasPrice:80000000}, 
           function(error, result) {
             if(!error){
               console.log(result);     
@@ -194,7 +193,8 @@
         if(!error) {
           var img_refinable;
           var img_token;
-          var img_origin  = "../../static/france.png";
+          var img_origin;
+          console.log("result vaut " + result);
           if(result[4]) {
             img_refinable = "../../static/002-success.png";
           } else {
@@ -218,6 +218,14 @@
               break;  
             default:
               break;
+          }
+          switch(Number(result[1])){
+            case 0:
+              img_origin = "../../static/saudi.png";
+              break;
+            case 1:
+              img_origin = "../../static/france.png";  
+              break;  
           }
           this.tokens_user.push({id: result[0].c[0], type: img_token, 
           quality: result[3].c[0], origin: img_origin, refinable: img_refinable})

@@ -73,4 +73,8 @@ contract TokenAssetSale is TokenAssetRefining, SaleBase {
         _removeAuction(_tokenId);
         emit AuctionCancelled(_tokenId);
     }
+
+    function previousToken(uint _tokenId) public view returns(uint){
+        return _previousToken[_tokenId];
+    }
 }

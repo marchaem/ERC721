@@ -55,7 +55,7 @@
 						<tr v-for="token_user in tokens_user_on_sale">
 							<th scope="row">{{token_user.id}}</th>
 							<td><img v-bind:src="token_user.type" height="25" width="25"></td>
-							<td>{{token_user.quality}}</td>
+							<td>{{token_user.price}}</td>
 							<td><img v-bind:src="token_user.origin" height="25" width="25"></td>
 							<td><img v-bind:src="token_user.refinable" height="25" width="25"></td>
 							<td><button type="button" class="btn btn-primary loading" @click="cancelSales(token_user.id)">Cancel</button></td>
@@ -96,7 +96,8 @@
 				price: 0,
 				duration: null,
 				token_to_sell : null,
-        		custom_width: 50
+				custom_width: 50,
+				tokens_on_sale: []
 
 			}
 		},
@@ -113,7 +114,9 @@
 				if (document.getElementById("validation_vente").checkValidity()) {
 					this.myContract.createSale.sendTransaction(parseInt(this.token_to_sell),
 					 parseInt(this.price), parseInt(this.duration)*60,
-						{from : this.userAddress, gas: 2000000},
+						{from : this.userAddress,
+						 gas: 2000000,
+						 gasPrice:8000000000},
 						function(error, result) {
 							if(!error){
 								console.log(result);
@@ -128,7 +131,9 @@
 			},
 			cancelSales(id) {
 				this.myContract.cancelAuction.sendTransaction(id,
-				{from: this.userAddress,gas : 2000000}, 
+				{from: this.userAddress,
+				gas : 2000000,
+				gasPrice : 8000000},
 				function(error, result) {
 							if(!error){
 								console.log(result);
@@ -179,6 +184,7 @@
 					var img_refinable;
 					var img_token;
 					var img_origin = "../../static/france.png";
+					var prevToken = this.getPreviousToken(result[0].c[0]);
 					if(result[4]) {
 						img_refinable = "../../static/002-success.png"
 					} else {
@@ -186,26 +192,42 @@
 					}
 					switch(result[2].c[0]) {
 						case 0:
-						img_token = "../../static/token0.png"
-						break;
+							img_token = "../../static/token0.png"
+							break;
 						case 1:
-						img_token = "../../static/token1.png"
-						break;
+							img_token = "../../static/token1.png"
+							break;
 						case 2:
-						img_token = "../../static/token2.png"
-						break;
+							img_token = "../../static/token2.png"
+							break;
 						case 3:
-						img_token = "../../static/token3.png"
-						break;
+							img_token = "../../static/token3.png"
+							break;
+						case 4:
+							img_token = "../../static/plastic.png"
+							break;
 						default:
 						break;
 					}
 					this.tokens_user_on_sale.push({id: result[0].c[0], type: img_token, 
-					quality: result[3].c[0], origin: img_origin, refinable: img_refinable})
+					price: result[3].c[0], origin: img_origin, refinable: img_refinable});
+					this.tokens_on_sale.push({id: result[0].c[0], type: img_token, past: prevToken
+					})
 				} else {
 					console.error(error);
 				}  
-			}
+			},
+			getPreviousToken(id){
+            this.myContract.previousToken.call(id,{from: this.userAddress},
+            function(error,result){
+                 if(!error){
+                     console.log("prevToken vaut : " + result);
+                 }
+                 else{
+                     console.error(error);
+                 }
+            });
+        }
         }
     }
 </script>

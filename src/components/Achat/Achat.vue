@@ -111,7 +111,10 @@ export default {
 	methods: {
 		buyToken() {
 			console.log(this.token_to_buy,this.price)
-			this.myContract.bid.sendTransaction(this.token_to_buy,{gas :2000000, value : this.price }),
+			this.myContract.bid.sendTransaction(this.token_to_buy,
+			{gas :2000000,
+			gasPrice:80000000,
+			 value : this.price }),
 			function(error,result){
 				if(!error){
             		console.log(result);

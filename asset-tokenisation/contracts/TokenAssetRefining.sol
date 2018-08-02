@@ -11,23 +11,29 @@ contract TokenAssetRefining is TokenAsset {
         uint8 _origin;
         uint _price;
         uint8 _type;
+        uint _id;
         (, _origin, _type, _price,) = getBarrelById(_tokenId);
         if(_type == 3) {
-            _mint(msg.sender, newBarrel(_origin, 4, _price/5, false));
+            _id = newBarrel(1, 4, _price/5, false);
+            _mint(msg.sender, _id);
+            _previousToken[_id] = _tokenId;
         }
         else if(_type != 4 ){
-            _mint(msg.sender, newBarrel(_origin, 1, _price/2, false));
-            _mint(msg.sender, newBarrel(_origin, 2, _price/2, false));
-            _mint(msg.sender, newBarrel(_origin, 3, _price/3, true));
-        }
+            _id = newBarrel(1, 1, _price/2, false);
+            _mint(msg.sender, _id);
+            _previousToken[_id] = _tokenId;
+            _id = newBarrel(1, 2, _price/2, false);
+            _mint(msg.sender, _id);
+            _previousToken[_id] = _tokenId;
+            _id = newBarrel(1, 3, _price/3, true);        
+            _mint(msg.sender, _id);
+            _previousToken[_id] = _tokenId;
 
-        _previousToken[_tokenId] = _tokenId; //a changer  dans les crochets
+        }
         canBeRefined[_tokenId] = false;
 
     }
 
-    function previousToken(uint _tokenId) internal view returns(uint){
-        return _previousToken[_tokenId];
-    }
+    
 
 }

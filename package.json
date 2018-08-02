@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
-    "start": "node server.js",      
+    "start": "npm run dev",
     "unit": "jest --config test/unit/jest.conf.js --coverage",
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit && npm run e2e",
@@ -21,6 +21,7 @@
     "module": "^1.2.5",
     "popper.js": "^1.14.3",
     "solc": "^0.4.24",
+    "truffle-hdwallet-provider": "0.0.6",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
     "web3": "^0.20.6"

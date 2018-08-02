@@ -1,6 +1,6 @@
 <template>
     <div class="row ml-1">
-            <h2 class="">List of user's tokens</h2>
+            <h2 class="">Tokens on sale</h2>
            <table class="table table-bordered table-striped ">
             <thead class="thead-dark">
                 <tr>
@@ -13,9 +13,9 @@
             <tbody>
                 <tr v-for="token_telling in tokens_on_sale">
 						<td>{{token_telling.id}}</td>
-						<td>{{token_telling.type}}</td>
+						<td><img v-bind:src="token_telling.type" height="25" width="25"></td>
 						<td>{{token_telling.seller}}</td>
-						<td>{{token_telling.past}}</td>
+						<td>ID : {{token_telling.past}} from <img v-bind:src="token_telling.origin" height="25" width="25"></td>
 					</tr>
             </tbody>
         </table>        
@@ -36,7 +36,7 @@
 		quality: 0, origin: 0, refinable: "../../static/refresh-button.png"}
       }
     },
-    props: ['myContract','tokensOnSale'],
+    props: ['myContract'],
     created: function () { 
 		this.fetch_data();
     },
@@ -64,34 +64,60 @@
         addToTokenList(error, result) {
 			if(!error) {
                 var img_token;
-                var prevToken = this.getPreviousToken();
-                switch(result[2].c[0]) {
+                var img_origin;
+                console.log("l'id vaut " + result[0].c[0]);
+                var _type = this.myContract.getBarrelById.call(result[0].c[0]);
+                console.log("_type vaut : "+ _type);
+                var prevToken = Number(this.myContract.previousToken.call(result[0].c[0]));
+                switch(Number(_type[2])) {
 						case 0:
-						img_token = "../../static/token0.png"
-						break;
+                            img_token = "../../static/token0.png"
+                            break;
 						case 1:
-						img_token = "../../static/token1.png"
-						break;
+                            img_token = "../../static/token1.png"
+                            break;
 						case 2:
-						img_token = "../../static/token2.png"
-						break;
+                            img_token = "../../static/token2.png"
+                            break;
 						case 3:
-						img_token = "../../static/token3.png"
-						break;
+                            img_token = "../../static/token3.png"
+                            break;
+                        case 4:
+                            img_token = "../../static/plastic.png"
+                            break;
 						default:
 						break;
-					}
-                console.log("prevtoken vaut :" + prevToken);
+                    }
+                switch(Number(_type[1]))  {
+                        case 0:
+                            img_origin = "../../static/france.png"
+                            break;
+						case 1:
+                            img_origin = "../../static/saudi.png"
+                            break;
+                }  
                 this.tokens_on_sale.push({
                 id: result[0].c[0],
                 type: img_token,
                 seller: result[1], 
-				past: prevToken
+                past: prevToken,
+                origin: img_origin
                 })
             }
             else {
 			console.error(error);
 			}  
+        },
+        getType(id){
+            this.myContract.getBarrelById.call(id,{from: this.userAddress},
+            function(error,result){
+                 if(!error){
+                     console.log("type vaut : " + result);
+                 }
+                 else{
+                     console.error(error);
+                 }
+            });
         },
         getPreviousToken(id){
             this.myContract.previousToken.call(id,{from: this.userAddress},
