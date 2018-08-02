@@ -60,9 +60,11 @@ export default {
   created: function () {
     if (typeof web3 !== 'undefined') {
       web3 = new Web3(web3.currentProvider);
+      console.log("ici");
   } else {
     // set the provider you want from Web3.providers
     web3 = new Web3(new Web3.providers.HttpProvider('https://ropsten.infura.io/6b243c811893488ab3d1cf177ff93662'));   
+    console.log("là");
     if(!web3.isConnected())
         console.log("not connected");
     else
