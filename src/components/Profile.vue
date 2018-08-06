@@ -124,7 +124,7 @@
     methods: {
       createToken() {
         this.myContract.mintBrut.sendTransaction(this.origin,
-         { from: this.userAddress, gas: 2000000,gasPrice:80000000}, 
+         { from: this.userAddress, gas: 2000000,gasPrice:800000000}, 
           function(error, result) {
             if(!error){
               console.log(result);
@@ -140,7 +140,7 @@
       refineToken() {
         console.log("to refine " + this.token_to_refine)
           this.myContract.refineToken.sendTransaction(this.token_to_refine,
-           {from: this.userAddress, gas: 600000, gasPrice:80000000}, 
+           {from: this.userAddress, gas: 600000, gasPrice:800000000}, 
           function(error, result) {
             if(!error){
               console.log(result);     

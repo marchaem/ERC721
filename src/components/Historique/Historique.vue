@@ -27,6 +27,7 @@
     name: 'Historique',
     data () {
       return {
+        _origin: null,
         tokens_on_sale: [],
 		ids_token_on_sale : [],
 		token_to_buy : null,
@@ -62,14 +63,21 @@
 			}  
         },
         addToTokenList(error, result) {
-			if(!error) {
-                var img_token;
-                var img_origin;
+			if(!error) {               
                 console.log("l'id vaut " + result[0].c[0]);
-                var _type = this.myContract.getBarrelById.call(result[0].c[0]);
-                console.log("_type vaut : "+ _type);
-                var prevToken = Number(this.myContract.previousToken.call(result[0].c[0]));
-                switch(Number(_type[2])) {
+                this.myContract.previousToken.call(result[0].c[0],{from: this.userAddress},this.getPreviousToken);  
+                this.myContract.getBarrelById.call(result[0].c[0],{from: this.userAddress},this.getType);
+                             
+            }
+            else {
+			console.error(error);
+			}  
+        },
+        getType(error,result){
+            var img_token;
+            var img_origin;
+            
+            switch(Number(result[2])) {
 						case 0:
                             img_token = "../../static/token0.png"
                             break;
@@ -88,47 +96,24 @@
 						default:
 						break;
                     }
-                switch(Number(_type[1]))  {
+                switch(Number(result[1]))  {
                         case 0:
                             img_origin = "../../static/france.png"
                             break;
 						case 1:
                             img_origin = "../../static/saudi.png"
                             break;
-                }  
+                }
                 this.tokens_on_sale.push({
                 id: result[0].c[0],
                 type: img_token,
                 seller: result[1], 
-                past: prevToken,
+                past: this._origin,
                 origin: img_origin
-                })
-            }
-            else {
-			console.error(error);
-			}  
+                })  
         },
-        getType(id){
-            this.myContract.getBarrelById.call(id,{from: this.userAddress},
-            function(error,result){
-                 if(!error){
-                     console.log("type vaut : " + result);
-                 }
-                 else{
-                     console.error(error);
-                 }
-            });
-        },
-        getPreviousToken(id){
-            this.myContract.previousToken.call(id,{from: this.userAddress},
-            function(error,result){
-                 if(!error){
-                     console.log("prevToken vaut : " + result);
-                 }
-                 else{
-                     console.error(error);
-                 }
-            });
+        getPreviousToken(error,result){
+            this._origin=Number(result);
         }
 
     }

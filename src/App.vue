@@ -60,8 +60,8 @@ export default {
   created: function () {
     if (typeof web3 !== 'undefined') {
       console.log("ici");
-      //web3 = new Web3(web3.currentProvider);
-      web3 = web3 = new Web3(web3.currentProvider);   
+      web3 = new Web3(web3.currentProvider);
+
   } else {
     // set the provider you want from Web3.providers
     console.log("là");
@@ -86,14 +86,14 @@ export default {
       console.log(typeof(this.userAddress));
       var contractAddress = '0x494d362d33a5ebc435952c17fa6809b261644d60';
       this.cryptoBarrelsContract = web3.eth.contract(bidABI).at(contractAddress);
-      this.balance = web3.eth.getBalance(this.userAddress,function(error,result){
+      /*this.balance = web3.eth.getBalance(this.userAddress,function(error,result){
         if(!error){
           console.log("balance vaut " + result);
         }
         else{
           console.error(error);
         }
-      });
+      });*/
       this.logged = true;
     },
 
