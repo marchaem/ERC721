@@ -1,6 +1,6 @@
 # Tokenisation d'asset financier 
 
-Ce projet rendre dans le cadre de la création de prototype du lab blockchain.
+Ce projet rendre dans le cadre de la création de prototype blockchain.
 
 Le prototype ici correspond au cycle de vie de barile de pétrole au travers de l'utilisation du standard de token non-fongible ERC.
 
